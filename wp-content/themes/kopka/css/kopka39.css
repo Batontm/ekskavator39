@@ -1,0 +1,831 @@
+/* =========================================================
+   ЭКСКАВАТОР 39 — цветовая система
+   Тема kopka написана только под светлый режим: на тёмных
+   секциях текст получал тот же цвет, что и фон (контраст 1:1).
+
+   Архитектура: цвета задаются ТОЛЬКО через переменные.
+   Тёмные секции переопределяют сами переменные, а не отдельные
+   правила — поэтому здесь невозможен конфликт специфичности,
+   из-за которого светлое правило перебивало тёмное.
+   Все пары проверены по WCAG AA (минимум 4.5:1).
+   ========================================================= */
+
+:root{
+  /* Поверхности */
+  --s-base:     #FFFFFF;
+  --s-muted:    #F4F6F8;
+  --s-dark:     #1F2429;
+
+  /* Текст (значения для светлого контекста) */
+  --t-strong:   #16191D;   /* заголовки        17.6:1 */
+  --t-body:     #2E3439;   /* основной текст   12.6:1 */
+  --t-muted:    #545C64;   /* вторичный         7.0:1 */
+
+  /* Готовые значения для тёмного контекста */
+  --on-dark-strong: #FFFFFF;
+  --on-dark:        #DDE2E6;
+  --on-dark-muted:  #A8B1B8;
+
+  /* Акцент */
+  --accent:      #FFC107;  /* янтарь — читается только на тёмном */
+  --accent-ink:  #8A5200;  /* тёмный янтарь для текста на светлом 6.4:1 */
+  --accent-hover:#E0A800;
+
+  --line:        #DFE4E9;
+  --surface:     var(--s-base);
+}
+
+/* ---------------------------------------------------------
+   ВСЕ СЕКЦИИ — единая светлая палитра.
+   Раньше hero/CTA/блок цен были тёмными "вставками" на
+   светлом сайте — получался рваный переход тёмное→светлое→
+   тёмное на каждой странице. Теперь везде светлый фон и один
+   и тот же набор токенов, тёмных секций в теле страницы нет.
+   --------------------------------------------------------- */
+
+body{ background-color: var(--s-base); color: var(--t-body); }
+
+.fse-section{ background-color: var(--s-base); color: var(--t-body); }
+.fse-section-dark{ background-color: var(--s-muted); color: var(--t-body); }
+.fse-section-dark-alt{ background-color: var(--s-base); color: var(--t-body); border-top: 1px solid var(--line); }
+
+.fse-hero-gradient{ background-color: var(--s-muted); color: var(--t-body); }
+.fse-contact-cta{ background-color: var(--s-base); color: var(--t-body); border-top: 1px solid var(--line); }
+
+.fse-heading{ color: var(--t-strong); }
+.fse-paragraph{ color: var(--t-body); }
+.fse-section-header .fse-paragraph{ color: var(--t-muted); }
+
+/* ---------------------------------------------------------
+   СПИСКИ С ИКОНКАМИ
+   Раньше .fse-feature-list li был жёстко #343A40 — ровно
+   цвет фона тёмной секции.
+   --------------------------------------------------------- */
+
+.fse-feature-list{ list-style: none; padding: 0; margin: 24px 0; }
+.fse-feature-list li{
+  color: var(--t-body);
+  display: flex; align-items: flex-start; gap: 12px;
+  margin-bottom: 14px; line-height: 1.6; font-size: 1.05rem;
+}
+.fse-feature-list li .fse-icon{
+  color: var(--accent-ink);
+  margin: 3px 0 0; font-size: 1.15rem; flex: 0 0 auto; width: auto; height: auto;
+}
+.fse-feature-list li strong{ color: var(--t-strong); }
+
+.fse-list{ margin: 0 0 24px; padding-left: 22px; line-height: 1.7; color: var(--t-body); }
+.fse-list li{ margin-bottom: 12px; }
+.fse-list li strong{ color: var(--t-strong); }
+
+/* ---------------------------------------------------------
+   КАРТОЧКИ
+   --------------------------------------------------------- */
+
+.fse-card{
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: 0 2px 14px rgba(16,24,32,.05);
+}
+.fse-card .fse-heading{ color: var(--t-strong); }
+.fse-card .fse-paragraph{ color: var(--t-body); }
+.fse-card-icon{ background-color: rgba(255,193,7,.16); color: var(--accent-ink); }
+.fse-service-card{ display: flex; flex-direction: column; }
+.fse-service-card .fse-button{ margin-top: auto; align-self: flex-start; }
+
+/* ---------------------------------------------------------
+   ССЫЛКИ
+   --------------------------------------------------------- */
+
+.fse-section a:not(.fse-button),
+.fse-card a:not(.fse-button){
+  color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px;
+}
+.fse-section a:not(.fse-button):hover{ color: var(--t-strong); }
+
+/* ---------------------------------------------------------
+   КНОПКИ
+   --------------------------------------------------------- */
+
+.fse-button{ text-decoration: none; }
+.fse-button-primary{ background-color: var(--accent); color: #1F2429; font-weight: 600; }
+.fse-button-primary:hover{ background-color: var(--accent-hover); color: #1F2429; }
+.fse-button-secondary{
+  background-color: transparent; color: var(--t-strong);
+  border: 2px solid var(--t-strong); font-weight: 600;
+}
+.fse-button-secondary:hover{ background-color: var(--t-strong); color: var(--surface); }
+
+/* ---------------------------------------------------------
+   ТАБЛИЦЫ
+   --------------------------------------------------------- */
+
+.fse-table{ width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 1rem; }
+.fse-table th, .fse-table td{
+  padding: 14px 16px; text-align: left;
+  border-bottom: 1px solid var(--line); color: var(--t-body);
+}
+.fse-table th{ width: 45%; font-weight: 600; color: var(--t-strong); background-color: var(--s-muted); }
+.fse-section-dark .fse-table th{ background-color: #E9EDF1; }
+
+/* ---------------------------------------------------------
+   ВРЕЗКИ И FAQ
+   --------------------------------------------------------- */
+
+blockquote.fse-quote{
+  border-left: 4px solid var(--accent); background-color: var(--s-muted);
+  padding: 18px 24px; margin: 32px 0 0; border-radius: 0 8px 8px 0; font-style: normal;
+}
+blockquote.fse-quote .fse-paragraph{ color: var(--t-body); margin: 0; }
+
+.fse-faq-item{
+  border: 1px solid var(--line); border-radius: 10px;
+  margin-bottom: 12px; overflow: hidden; background-color: var(--surface);
+}
+.fse-faq-details summary{
+  cursor: pointer; padding: 18px 52px 18px 22px; font-weight: 600;
+  font-size: 1.05rem; list-style: none; position: relative; color: var(--t-strong);
+}
+.fse-faq-details summary::-webkit-details-marker{ display: none; }
+.fse-faq-details summary::after{
+  content: "+"; position: absolute; right: 22px; top: 50%;
+  transform: translateY(-50%); font-size: 26px; line-height: 1; color: var(--accent-ink);
+}
+.fse-faq-details[open] summary::after{ content: "\2212"; }
+.fse-faq-details summary:hover{ background-color: var(--s-muted); }
+.fse-faq-answer{ padding: 0 22px 18px; }
+.fse-faq-answer .fse-paragraph{ margin: 0; color: var(--t-body); }
+
+/* ---------------------------------------------------------
+   КОНТАКТЫ
+   --------------------------------------------------------- */
+
+.fse-contact-list{ list-style: none; padding: 0; margin: 20px 0; }
+.fse-contact-list li{ margin-bottom: 10px; color: var(--t-body); }
+.fse-contact-list strong{ color: var(--t-strong); }
+
+/* ---------------------------------------------------------
+   ЛОГОТИП
+   Тема задавала height:70px, min-height:60px и
+   filter: brightness(1.5) — фильтр пересвечивал наш логотип.
+   --------------------------------------------------------- */
+
+.fse-logo,
+.fse-logo-area img{
+  height: 46px !important; min-height: 0 !important; max-height: 46px !important;
+  width: auto !important; filter: none !important;
+  background: none; border-radius: 0; padding: 0; object-fit: contain;
+}
+.fse-site-title{ display: none; }
+.fse-header{ padding-top: 10px !important; padding-bottom: 10px !important; }
+.fse-logo-area{ gap: 0; }
+
+@media (max-width: 768px){
+  .fse-logo, .fse-logo-area img{ height: 34px !important; max-height: 34px !important; }
+}
+
+/* ---------------------------------------------------------
+   HERO — двухколоночный: текст слева, фото техники справа.
+   Колонка занимает ~45% (тема задаёт grid-template-columns:
+   55fr 45fr на .fse-hero-content — не трогаем). Декоративный
+   градиентный блок темы (::before) убран; отдельной акцентной
+   жёлтой плашки за фото больше нет — фото самостоятельная карточка.
+   --------------------------------------------------------- */
+
+
+/* ---------------------------------------------------------
+   БЛОК "РАБОТАЕТЕ НАПРЯМУЮ С ОПЕРАТОРОМ" (секция .fse-equipment)
+   Тема раскладывает фото/текст через flex с фиксированными
+   flex-basis (55% + 40% + gap 60px = 95% + 60px) — на десктопных
+   ширинах, где свободного места чуть меньше 60px, flex-контейнер
+   сворачивается в одну колонку (фото уходит под текст). Переводим
+   именно эту секцию на grid с fr-долями, как в hero — так колонки
+   всегда остаются в один ряд, без непредсказуемого переноса. */
+@media (min-width: 993px){
+  .fse-equipment .fse-columns{
+    display: grid;
+    grid-template-columns: 55fr 45fr;
+    gap: 48px;
+    flex-wrap: nowrap;
+  }
+  .fse-equipment .fse-image-column,
+  .fse-equipment .fse-text-column{
+    flex: initial;
+    min-width: 0;
+  }
+}
+
+.fse-hero{ min-height: 0; padding: 32px 0 80px; }
+
+/* На десктопе (две колонки, см. брейкпоинт 992px в style.css) левая
+   текстовая колонка была заметно выше правой (фото + карточка
+   контактов) — заголовок и абзацы "вываливались" за нижнюю границу
+   фото. Немного уменьшаем заголовок и вертикальные отступы слева,
+   чтобы весь текстовый блок укладывался в высоту колонки с фото. */
+@media (min-width: 993px){
+  .fse-hero-text-column h1.fse-heading{
+    font-size: clamp(2.1rem, 3.6vw, 3.4rem);
+    line-height: 1.15;
+    margin-bottom: 18px;
+  }
+  .fse-hero-text-column .fse-paragraph{
+    margin-bottom: 20px;
+  }
+  .fse-hero-text-column .fse-feature-list{
+    margin: 16px 0;
+  }
+  .fse-hero-text-column .fse-feature-list li{
+    margin-bottom: 10px;
+  }
+}
+
+/* Родительские .fse-section/.fse-group режут overflow-x, а заодно
+   и overflow-y (браузер сам переводит его в auto) — карточка
+   доверия, которая раньше свисала НИЖЕ снимка (bottom:-26px),
+   обрезалась родителем. Теперь карточка лежит НАД самим снимком
+   (внутри его рамки), а не за его пределами — так обрезать нечего. */
+.fse-hero-content{ align-items: flex-start !important; }
+
+.fse-hero-visual-column{
+  position: relative;
+  min-height: 0;
+  height: auto;
+  transform: none !important;
+  margin: 0 !important;
+  /* Фон промежутка между фото и карточкой контактов должен совпадать
+     с фоном самой hero-секции (var(--s-muted)) — тем же, что виден
+     под заголовком слева, а не белым фоном страницы. */
+  background-color: var(--s-muted);
+}
+.fse-hero-visual-column::before{ content: none !important; }
+
+.fse-hero-photo-wrap{
+  position: relative;
+  display: block;
+}
+
+.fse-hero-visual-image{
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 440px;
+  object-fit: cover;
+  object-position: 65% 50%;
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(16,24,32,.16);
+}
+
+/* Плашка "Работаю лично" — абсолютно позиционирована ТОЛЬКО
+   относительно .fse-hero-photo-wrap (обёртка вокруг самого фото),
+   а не всей .fse-hero-visual-column — иначе bottom/left считались
+   бы от нижнего края колонки (после карточки контактов), и плашка
+   уезжала бы за пределы фото. */
+.fse-hero-trust-card{
+  position: absolute;
+  z-index: 2;
+  left: 16px;
+  bottom: 16px;
+  right: auto;
+  max-width: 210px;
+  background: var(--s-base);
+  border-radius: 14px;
+  padding: 12px 16px;
+  box-shadow: 0 16px 36px rgba(16,24,32,.28);
+}
+.fse-hero-trust-title{
+  margin: 0 0 4px; font-weight: 700; font-size: .92rem; color: var(--t-strong); line-height: 1.3;
+}
+.fse-hero-trust-sub{
+  margin: 0; font-size: .82rem; color: var(--t-muted);
+  display: flex; align-items: center; gap: 6px;
+}
+.fse-hero-trust-sub .fa-map-marker-alt,
+.fse-hero-trust-sub .fa-user-check{ color: var(--accent-ink); }
+
+/* Карточка связи под фото — занимает всю ширину колонки (= ширине
+   фото), белая, с лёгкой тенью, кнопки одинаковой высоты. */
+.fse-hero-contact-card{
+  position: relative;
+  margin-top: 24px;
+  background: var(--s-base);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 6px 14px rgba(16,24,32,.10);
+}
+.fse-hero-contact-call{
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  padding: 14px 16px;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+.fse-hero-contact-row{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.fse-hero-contact-row > a.fse-button,
+.fse-hero-contact-row > span.fse-max-button-wrap{
+  width: 100%;
+  box-sizing: border-box;
+}
+.fse-hero-contact-row a.fse-button,
+.fse-hero-contact-row button.fse-button{
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 12px 10px;
+  font-size: .9rem;
+  white-space: nowrap;
+}
+.fse-hero-contact-hours{
+  margin: 10px 0 0;
+  text-align: center;
+  font-size: .82rem;
+  color: var(--t-muted);
+}
+
+/* Кнопка "Написать в MAX" без ссылки: обычная кнопка (не disabled,
+   иначе клик не сработает бы), по клику показывает предупреждение
+   вместо перехода на несуществующий адрес. */
+.fse-max-button-wrap{ display: inline-flex; flex-direction: column; width: 100%; }
+.fse-max-button-wrap button.fse-button-max-pending{ cursor: pointer; }
+.fse-max-note{ display: block; margin-top: 6px; font-size: .8rem; color: var(--t-muted); text-align: center; }
+
+@media (max-width: 900px){
+  .fse-hero-visual-image{ height: 320px; }
+  .fse-hero-trust-card{ left: 14px; bottom: 14px; right: auto; max-width: 190px; padding: 11px 14px; }
+}
+
+@media (max-width: 768px){
+  .fse-hero{ padding: 24px 0 50px; }
+  .fse-hero-visual-column{ margin-top: 36px !important; }
+  .fse-hero-visual-image{ height: 260px; }
+}
+
+@media (max-width: 480px){
+  .fse-hero-contact-row{ grid-template-columns: 1fr; }
+}
+
+/* ---------------------------------------------------------
+   МОБИЛЬНАЯ ПАНЕЛЬ
+   --------------------------------------------------------- */
+
+@media (max-width: 768px){
+  .fse-mobile-bar{
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 9999;
+    display: flex; gap: 8px; padding: 10px;
+    background: var(--s-dark); box-shadow: 0 -2px 12px rgba(0,0,0,.35);
+  }
+  .fse-mobile-bar a{ flex: 1; text-align: center; padding: 14px 8px; border-radius: 8px; font-weight: 600; text-decoration: none; font-size: 15px; }
+  .fse-mobile-bar .call{ background: var(--accent); color: #1F2429; }
+  .fse-mobile-bar .wa{ background: #12783B; color: #FFFFFF; }
+  body{ padding-bottom: 76px; }
+}
+@media (min-width: 769px){ .fse-mobile-bar{ display: none; } }
+
+/* =========================================================
+   ПЕРЕКРЫТИЕ ПРАВИЛ ТЕМЫ
+   Ниже — точные копии селекторов из style.css, где тема
+   жёстко задаёт светлый текст в расчёте на тёмный фон.
+   Специфичность совпадает, файл грузится позже — выигрываем.
+   Без этого блока на светлых секциях текст был бы белым
+   на белом.
+   ========================================================= */
+
+/* Секции, ставшие светлыми */
+.fse-section-dark .fse-heading,
+.fse-section-dark-alt .fse-heading{ color: var(--t-strong); }
+.fse-section-dark .fse-paragraph,
+.fse-section-dark-alt .fse-paragraph{ color: var(--t-body); }
+.fse-section-dark .fse-section-header .fse-paragraph,
+.fse-section-dark-alt .fse-section-header .fse-paragraph{ color: var(--t-muted); }
+
+/* Карточки услуг: тема красила их текст в #F8F9FA и #CED4DA
+   в расчёте на тёмную подложку — на белой карточке это 1.1:1 */
+.fse-services-grid .fse-card{ color: var(--t-body); background-color: var(--surface); }
+.fse-services-grid .fse-card .fse-heading{ color: var(--t-strong); }
+.fse-services-grid .fse-card .fse-paragraph{ color: var(--t-body); }
+
+/* Карточки в галерее видов работ */
+.fse-portfolio-item .fse-heading{ color: var(--t-strong); }
+.fse-portfolio-item .fse-paragraph{ color: var(--t-body); }
+
+/* Hero теперь светлый — тема жёстко красила эти два класса
+   в белый/светло-серый в расчёте на тёмный фон, перекрываем */
+.fse-hero-text-column .fse-heading{ color: var(--t-strong); }
+.fse-hero-text-column .fse-paragraph{ color: var(--t-body); }
+
+/* =========================================================
+   ГЛАВНОЕ МЕНЮ
+   PressMeGPT инжектирует в header.php инлайновый <style> с
+   .fse-main-nav a{color:#343a40} — цвет под светлую шапку.
+   Шапка тёмная, поэтому контраст был ~1.3:1.
+   Инлайновый стиль идёт после внешних файлов, поэтому здесь
+   единственный работающий вариант — !important.
+   ========================================================= */
+
+.fse-header .fse-main-nav a,
+.fse-header .fse-nav-menu a{
+  color: var(--on-dark) !important;
+  font-weight: 500;
+  text-decoration: none;
+}
+.fse-header .fse-main-nav a:hover,
+.fse-header .fse-nav-menu a:hover,
+.fse-header .fse-main-nav .current-menu-item > a,
+.fse-header .fse-nav-menu .current-menu-item > a{
+  color: var(--accent) !important;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+/* Текущая страница — подчёркнута янтарём без наведения */
+.fse-header .current-menu-item > a,
+.fse-header .current_page_item > a{ color: var(--accent) !important; }
+
+/* Тема глушит все .fse-section через overflow-x:hidden (от бокового
+   переполнения decor-блоков в hero), а шапка сама несёт класс
+   .fse-section — из-за этого overflow-y у неё браузер тоже считает
+   как auto, и выпадающее подменю обрезается по нижней границе шапки.
+   Возвращаем шапке overflow:visible, горизонтальный скролл ей и не
+   грозил — decor-блоки есть только внутри .fse-hero. */
+.fse-header.fse-section{ overflow: visible !important; }
+
+/* Выпадающее подменю: тема его не стилизовала вообще */
+.fse-header .fse-nav-menu li{ position: relative; }
+.fse-header .fse-nav-menu .sub-menu{
+  display: none !important; opacity: 0 !important; visibility: hidden !important;
+  pointer-events: none !important;
+  position: absolute; top: 100%; left: 0; z-index: 100;
+  min-width: 260px; padding: 8px 0; margin: 0;
+  background: #FFFFFF; border-radius: 10px;
+  box-shadow: 0 12px 34px rgba(0,0,0,.22);
+  flex-direction: column; gap: 0;
+}
+.fse-header .fse-nav-menu li:hover > .sub-menu,
+.fse-header .fse-nav-menu li:focus-within > .sub-menu{
+  display: flex !important; opacity: 1 !important; visibility: visible !important;
+  pointer-events: auto !important;
+}
+.fse-header .fse-nav-menu .sub-menu li{ width: 100%; }
+.fse-header .fse-nav-menu .sub-menu a{
+  color: #2E3439 !important; display: block; padding: 11px 20px;
+  font-size: 15px; white-space: nowrap;
+}
+.fse-header .fse-nav-menu .sub-menu a:hover{
+  color: #16191D !important; background: #F4F6F8; text-decoration: none;
+}
+
+/* Кнопка телефона в шапке */
+.fse-header-actions .fse-button-phone{
+  background: var(--accent); color: #1F2429 !important;
+  font-weight: 700; padding: 12px 20px; border-radius: 8px; font-size: 15px;
+}
+.fse-header-actions .fse-button-phone:hover{ background: var(--accent-hover); }
+
+/* Мобильная выезжающая панель — светлая, текст оставляем тёмным */
+.pmgpt-menu-panel{ background: #FFFFFF; }
+
+/* =========================================================
+   ФУТЕР
+   .fse-footer несёт также класс .fse-section, поэтому общее
+   правило .fse-section{background:var(--s-base)} (специфичность
+   совпадает с .fse-footer из style.css, но грузится позже и
+   побеждает) уже сделало фон футера светлым. Сами цвета текста
+   в теме (#CED4DA, брендинг с filter:brightness(1.5)) рассчитаны
+   на тёмный фон — на светлом всё становится невидимым. Ниже —
+   осознанно светлый футер с нашими токенами вместо отката к
+   тёмному варианту.
+   ========================================================= */
+
+.fse-footer{ background: var(--s-muted); color: var(--t-body); border-top: 1px solid var(--line); }
+.fse-footer-columns .fse-column h4{ color: var(--t-strong); }
+.fse-footer-about .fse-paragraph{ color: var(--t-body); }
+.fse-footer-menu a{ color: var(--t-body); }
+.fse-footer-menu a:hover{ color: var(--accent-ink); }
+.fse-contact-list li{ color: var(--t-body); }
+.fse-contact-list a{ color: var(--accent-ink); }
+.fse-footer-bottom{ border-top: 1px solid var(--line); }
+.fse-copyright{ color: var(--t-muted); }
+
+/* Логотип в футере: theme.css задавал filter:brightness(1.5), рассчитанный
+   на тёмный фон, — на светлом это дополнительно "выбеливало" и без того
+   графитовый логотип. Футер теперь получает графитовый вариант файла
+   (см. functions.php → kopka39_brand_html), фильтр яркости отключаем. */
+.fse-footer-logo{
+  filter: none !important; height: 40px !important; width: auto !important;
+}
+
+/* =========================================================
+   Кнопка "Написать в MAX" — старые правила (до появления карточки
+   связи) заменены общими правилами для .fse-max-button-wrap выше.
+   ========================================================= */
+button.fse-button-max-pending{ opacity: .85; }
+
+/* ---------------------------------------------------------
+   БЛОК ЦЕН
+   Тема заливала .fse-price-card тёмным графитом
+   (background: var(--td-color-heading)), а заголовок внутри красила
+   в --td-color-primary — после перевода сайта на светлую палитру
+   карточка превратилась в нечитаемый чёрный прямоугольник.
+   Приводим её к светлой палитре: белая подложка, тёмный текст,
+   жёлтым остаётся только сама цифра ставки.
+   --------------------------------------------------------- */
+
+.fse-prices{ text-align: left; }
+.fse-prices .fse-section-header{ text-align: center; }
+
+.fse-price-card{
+  background-color: var(--s-base) !important;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 32px !important;
+  max-width: 760px;
+  margin: 32px auto 0;
+  box-shadow: 0 10px 30px rgba(16,24,32,.10) !important;
+  text-align: left;
+}
+.fse-price-card .fse-heading{
+  color: var(--t-strong) !important;
+  font-size: 1.5rem !important;
+  margin: 0 0 10px !important;
+}
+.fse-price-card .fse-paragraph{
+  color: var(--t-body) !important;
+  font-size: 1rem !important;
+  margin-bottom: 14px !important;
+}
+.fse-price-value{
+  color: var(--t-strong) !important;
+  font-size: 2.6rem !important;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0 0 14px !important;
+}
+.fse-highlight-price{ color: var(--accent-ink) !important; }
+
+/* Подзаголовок "Подача техники" внутри карточки */
+.fse-price-subhead{
+  font-size: 1.15rem !important;
+  margin-top: 26px !important;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+
+.fse-price-card .fse-table{ margin: 16px 0 20px; }
+
+/* Строка с итоговой формулой — выделяем спокойной подложкой */
+.fse-price-formula{
+  background: var(--s-muted);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 22px !important;
+}
+
+@media (max-width: 768px){
+  .fse-price-card{ padding: 22px !important; }
+  .fse-price-value{ font-size: 2.1rem !important; }
+}
+
+/* ---------------------------------------------------------
+   БЛОК "ЧТО НУЖНО СООБЩИТЬ ДЛЯ РАСЧЁТА"
+   Контакты и кнопки всех каналов связи под чек-листом.
+   --------------------------------------------------------- */
+
+.fse-calc-contacts{
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+.fse-calc-contacts .fse-contact-list{ margin: 10px 0 0; }
+.fse-calc-contacts .fse-contact-list li{ color: var(--t-body); }
+.fse-calc-contacts .fse-contact-list strong{ color: var(--t-strong); }
+.fse-calc-contacts .fse-contact-buttons{
+  justify-content: flex-start;
+  margin-top: 22px;
+  gap: 12px;
+}
+
+/* Ссылка "Написать в MAX" внутри строки контактов: пока реальной
+   ссылки нет, kopka39_max_button_html отдаёт кнопку-заглушку —
+   в текстовом списке она должна выглядеть ссылкой, а не кнопкой. */
+.fse-inline-max-link{
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--accent-ink);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.fse-inline-max-link:hover{ color: var(--t-strong); }
+
+@media (max-width: 768px){
+  .fse-calc-contacts .fse-contact-buttons{ align-items: stretch; }
+  .fse-calc-contacts .fse-contact-buttons .fse-button,
+  .fse-calc-contacts .fse-contact-buttons .fse-max-button-wrap{ width: 100%; max-width: none; }
+}
+
+/* В текстовом списке контактов обёртка кнопки MAX не должна
+   растягиваться на всю ширину строки (по умолчанию она width:100%
+   для кнопок в hero-карточке). */
+.fse-contact-list .fse-max-button-wrap{
+  display: inline;
+  width: auto;
+}
+.fse-contact-list .fse-max-note{
+  display: inline;
+  margin-left: 8px;
+  text-align: left;
+}
+
+/* ---------------------------------------------------------
+   ФОТОГРАФИИ РАБОТ
+   Реальные снимки с объектов: одиночные фото с подписью,
+   сетка галереи и карточки в разделе «Виды работ».
+   --------------------------------------------------------- */
+
+/* Одиночное фото с подписью */
+.fse-photo{
+  margin: 0 0 26px;
+}
+.fse-photo img{
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(16,24,32,.14);
+}
+.fse-photo-caption{
+  margin: 10px 0 0;
+  font-size: .92rem;
+  line-height: 1.5;
+  color: var(--t-muted);
+}
+
+/* Сетка галереи работ */
+.fse-gallery{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin: 24px 0 0;
+}
+.fse-gallery-item{
+  background: var(--s-base);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(16,24,32,.08);
+  display: flex;
+  flex-direction: column;
+}
+.fse-gallery-item img{
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+.fse-gallery-text{
+  padding: 16px 18px 20px;
+}
+.fse-gallery-item h3,
+.fse-gallery-item .fse-gallery-title{
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--t-strong);
+  line-height: 1.3;
+}
+.fse-gallery-item p{
+  margin: 0;
+  font-size: .95rem;
+  line-height: 1.55;
+  color: var(--t-body);
+}
+
+/* Карточки «Виды работ» на главной: под заголовком теперь текст */
+.fse-portfolio-item .fse-paragraph{
+  padding: 0 20px 22px;
+  margin: 0;
+  font-size: .95rem;
+  line-height: 1.55;
+  text-align: left;
+}
+.fse-portfolio-item .fse-heading{
+  margin: 18px 0 10px !important;
+  text-align: left;
+}
+.fse-portfolio-grid{ grid-template-columns: repeat(3, 1fr); }
+
+@media (max-width: 992px){
+  .fse-gallery{ grid-template-columns: repeat(2, 1fr); }
+  .fse-portfolio-grid{ grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px){
+  .fse-gallery{ grid-template-columns: 1fr; gap: 18px; }
+  .fse-portfolio-grid{ grid-template-columns: 1fr; }
+}
+
+/* ---------------------------------------------------------
+   БЛОК «РАБОТАЕТЕ НАПРЯМУЮ С ОПЕРАТОРОМ»
+   Фото портретное (2:3) и в своей колонке вытягивалось намного
+   ниже текста — приходилось прокручивать страницу, чтобы увидеть
+   и то, и другое. Ограничиваем высоту снимка и выравниваем
+   колонки по верхнему краю: текст и фото заканчиваются вровень.
+   --------------------------------------------------------- */
+
+@media (min-width: 993px){
+  .fse-equipment .fse-columns{ align-items: start; }
+  .fse-equipment .fse-image-column picture{ display: block; }
+  .fse-equipment .fse-image-column .fse-image{
+    width: 100%;
+    height: 560px;
+    object-fit: cover;
+    object-position: 50% 28%;
+    border-radius: 14px;
+  }
+}
+
+@media (min-width: 1400px){
+  .fse-equipment .fse-image-column .fse-image{ height: 620px; }
+}
+
+@media (max-width: 992px){
+  .fse-equipment .fse-image-column .fse-image{
+    max-height: 460px;
+    width: auto;
+    object-fit: cover;
+  }
+}
+
+/* ---------------------------------------------------------
+   ХЛЕБНЫЕ КРОШКИ
+   Узкая полоса между шапкой и первым экраном. Фон совпадает
+   с фоном hero-секции, чтобы полоса читалась как её часть,
+   а не как отдельный блок.
+   --------------------------------------------------------- */
+
+.fse-breadcrumbs{
+  background: var(--s-muted);
+  font-size: .9rem;
+}
+.fse-breadcrumbs-inner{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 20px;
+}
+.fse-breadcrumbs ol{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 0;
+}
+.fse-breadcrumbs li{
+  display: inline-flex;
+  align-items: center;
+  color: var(--t-muted);
+  min-width: 0;
+}
+.fse-breadcrumbs li + li::before{
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin: 0 10px;
+  border-top: 1.5px solid var(--t-muted);
+  border-right: 1.5px solid var(--t-muted);
+  transform: rotate(45deg);
+  opacity: .65;
+  flex: 0 0 auto;
+}
+.fse-breadcrumbs a{
+  color: var(--t-body);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.fse-breadcrumbs a:hover,
+.fse-breadcrumbs a:focus-visible{
+  color: var(--accent-ink);
+  border-bottom-color: currentColor;
+}
+.fse-breadcrumbs [aria-current="page"]{
+  color: var(--t-muted);
+}
+
+/* На узких экранах длинная цепочка не должна ломать вёрстку */
+@media (max-width: 600px){
+  .fse-breadcrumbs{ font-size: .84rem; }
+  .fse-breadcrumbs-inner{ padding: 10px 16px; }
+  .fse-breadcrumbs li + li::before{ margin: 0 7px; }
+}

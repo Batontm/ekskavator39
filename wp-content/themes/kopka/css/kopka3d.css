@@ -1,0 +1,296 @@
+/* =========================================================
+   ЭКСКАВАТОР 39 — вариант «3D»: тёмный графит + оранжевый.
+   Грузится последним (после kopka39.css) и переопределяет
+   токены цвета, поэтому все страницы (главная и внутренние)
+   переходят на тёмную палитру без правки их содержимого.
+   Откат: убрать подключение этого файла в functions.php
+   (функция kopka3d_enqueue) — сайт вернётся к светлому виду.
+   ========================================================= */
+
+:root{
+  --s-base:   #1c1e21;
+  --s-muted:  #232529;
+  --s-dark:   #141518;
+  --surface:  #25282c;
+
+  --t-strong: #F4F5F6;   /* 15.6:1 на #1c1e21 */
+  --t-body:   #CDD1D6;   /* 11.6:1 */
+  --t-muted:  #A0A6AD;   /*  7.0:1 */
+
+  --on-dark-strong: #FFFFFF;
+  --on-dark:        #DDE2E6;
+  --on-dark-muted:  #A8B1B8;
+
+  --accent:       #F28C1B;  /* кнопки, плашки */
+  --accent-ink:   #FFA94D;  /* оранжевый текст на тёмном 8.6:1 */
+  --accent-hover: #FF9F3A;
+
+  --line: rgba(255,255,255,.09);
+  --k3-font-display: 'Unbounded', 'Inter', system-ui, sans-serif;
+}
+
+html{ background:#16171a; }
+body{
+  background:
+    radial-gradient(1100px 700px at 78% -120px, #3a3d42 0%, rgba(58,61,66,0) 70%),
+    linear-gradient(180deg, #202226 0%, #17181b 900px, #16171a 100%) !important;
+  background-color:#16171a !important;
+  color: var(--t-body);
+}
+
+/* Секции — прозрачные поверх общего градиента; чередование —
+   едва заметной подложкой, без «рваных» переходов. */
+.fse-section,
+.fse-section-dark,
+.fse-section-dark-alt,
+.fse-hero-gradient,
+.fse-contact-cta,
+.fse-portfolio{ background-color: transparent !important; color: var(--t-body); }
+.fse-section-dark,
+.fse-section-dark-alt{ background-color: rgba(255,255,255,.02) !important; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.fse-hero-gradient::before{ opacity:.5; }
+
+/* Заголовки */
+.fse-section h1.fse-heading,
+.fse-section h2.fse-heading,
+.fse-section-header .fse-heading{
+  font-family: var(--k3-font-display);
+  font-weight: 700;
+  letter-spacing: -.01em;
+  line-height: 1.12;
+}
+.fse-section-header h2.fse-heading{ font-size: clamp(1.7rem, 3.2vw, 2.6rem); }
+.fse-heading{ color: var(--t-strong) !important; }
+.fse-paragraph{ color: var(--t-body); }
+.fse-section-header .fse-paragraph{ color: var(--t-muted) !important; }
+.fse-section-dark .fse-paragraph,
+.fse-section-dark-alt .fse-paragraph,
+.fse-hero-text-column .fse-paragraph{ color: var(--t-body) !important; }
+
+/* Карточки */
+.fse-card,
+.fse-services-grid .fse-card,
+.fse-portfolio-item,
+.fse-gallery-item{
+  background: linear-gradient(160deg, #2a2d31 0%, #1f2124 100%) !important;
+  border: 1px solid var(--line) !important;
+  box-shadow: 0 18px 40px rgba(0,0,0,.28) !important;
+  border-radius: 18px !important;
+  color: var(--t-body) !important;
+  transition: transform .25s ease, border-color .25s ease;
+}
+.fse-card:hover,
+.fse-gallery-item:hover{ transform: translateY(-4px); border-color: rgba(242,140,27,.55) !important; }
+.fse-card-icon{
+  background: rgba(242,140,27,.14) !important;
+  color: var(--accent-ink) !important;
+  border-radius: 14px !important;
+  width: 64px !important; height: 64px !important; font-size: 1.7rem !important;
+}
+.fse-services-grid{ counter-reset: k3svc; }
+.fse-service-card{ position: relative; }
+.fse-service-card::before{
+  counter-increment: k3svc;
+  content: counter(k3svc, decimal-leading-zero);
+  position: absolute; top: 22px; right: 24px;
+  font-family: var(--k3-font-display); font-weight: 800; font-size: .95rem;
+  color: var(--accent-ink); opacity: .9;
+}
+
+/* Ссылки */
+.fse-section a:not(.fse-button):not(.k3-btn),
+.fse-card a:not(.fse-button){ color: var(--accent-ink); }
+.fse-section a:not(.fse-button):not(.k3-btn):hover{ color: #fff; }
+
+/* Кнопки */
+.fse-button{ border-radius: 12px !important; transition: background-color .2s, color .2s, border-color .2s, transform .2s; }
+.fse-button-primary,
+.fse-button-primary:visited{ background-color: var(--accent) !important; color: #16171a !important; font-weight: 800 !important; border: 0 !important; }
+.fse-button-primary:hover{ background-color: var(--accent-hover) !important; color: #16171a !important; transform: translateY(-1px); }
+.fse-button-secondary{ background: rgba(255,255,255,.05) !important; color: var(--t-strong) !important; border: 1.5px solid rgba(255,255,255,.22) !important; }
+.fse-button-secondary:hover{ background: rgba(255,255,255,.12) !important; color: #fff !important; border-color: var(--accent) !important; }
+
+/* Таблицы, врезки, FAQ */
+.fse-table th,
+.fse-section-dark .fse-table th{ background-color: rgba(255,255,255,.04) !important; color: var(--t-strong); }
+.fse-table td{ color: var(--t-body); }
+.fse-table th, .fse-table td{ border-bottom-color: var(--line) !important; }
+blockquote.fse-quote{ background: rgba(242,140,27,.08) !important; border: 1px solid rgba(242,140,27,.35) !important; border-radius: 14px !important; }
+.fse-faq-item{ background: #212327 !important; border-color: var(--line) !important; border-radius: 14px !important; }
+.fse-faq-details summary:hover{ background-color: rgba(255,255,255,.04) !important; }
+.fse-faq-details summary::after{ color: var(--accent-ink) !important; }
+
+/* Цены */
+.fse-price-card{
+  background: linear-gradient(160deg, #2c2e32, #1c1e21) !important;
+  border: 1px solid rgba(242,140,27,.3) !important;
+  border-radius: 22px !important;
+  box-shadow: 0 24px 60px rgba(0,0,0,.35) !important;
+}
+.fse-price-value .fse-highlight-price{ font-family: var(--k3-font-display); color: var(--accent-ink) !important; }
+.fse-price-formula{ background: rgba(255,255,255,.05) !important; }
+
+/* Фото */
+.fse-photo img,
+.fse-hero-visual-image,
+.fse-equipment .fse-image-column .fse-image{ border-radius: 18px !important; box-shadow: 0 24px 50px rgba(0,0,0,.4) !important; }
+.fse-photo-caption{ color: var(--t-muted) !important; }
+
+/* Хлебные крошки */
+.fse-breadcrumbs{ background: transparent !important; border-bottom: 1px solid var(--line); }
+.fse-breadcrumbs a{ color: var(--t-body) !important; }
+.fse-breadcrumbs a:hover{ color: var(--accent-ink) !important; }
+
+/* Hero внутренних страниц (светлая карточка контактов → тёмная) */
+.fse-hero-contact-card,
+.fse-hero-trust-card{ background: #25282c !important; border-color: var(--line) !important; box-shadow: 0 16px 40px rgba(0,0,0,.4) !important; }
+.fse-hero-visual-column{ background-color: transparent !important; }
+
+/* ---------------- Шапка ---------------- */
+.theme-designer-header .fse-header,
+.fse-header{
+  background: rgba(22,23,26,.82) !important;
+  backdrop-filter: saturate(1.2) blur(12px);
+  -webkit-backdrop-filter: saturate(1.2) blur(12px);
+  border-bottom: 1px solid var(--line) !important;
+  box-shadow: none !important;
+}
+.fse-header .fse-main-nav a,
+.fse-header .fse-nav-menu a{ color: #D3D7DC !important; }
+.fse-header .fse-main-nav a:hover,
+.fse-header .current-menu-item > a,
+.fse-header .current_page_item > a{ color: var(--accent-ink) !important; }
+.fse-header .fse-nav-menu .sub-menu{ background: #23262a !important; border: 1px solid var(--line); }
+.fse-header .fse-nav-menu .sub-menu a{ color: #D3D7DC !important; }
+.fse-header .fse-nav-menu .sub-menu a:hover{ color: #fff !important; background: rgba(255,255,255,.06) !important; }
+.fse-header-actions .fse-button-phone{ background: var(--accent) !important; color: #16171a !important; font-weight: 800 !important; border-radius: 10px !important; }
+.fse-header-actions .fse-button-phone:hover{ background: var(--accent-hover) !important; }
+.fse-toggle-button, #pmgpt-menu-toggle,
+.fse-toggle-button svg, #pmgpt-menu-toggle svg{ color: #ECEDEE !important; }
+#pmgpt-menu-panel{ background: #1c1e21 !important; color: #ECEDEE !important; }
+#pmgpt-menu-panel .pmgpt-menu-link{ color: #ECEDEE !important; border-bottom-color: var(--line) !important; }
+#pmgpt-menu-panel .pmgpt-menu-panel-head,
+#pmgpt-menu-panel .pmgpt-menu-actions{ border-color: var(--line) !important; }
+#pmgpt-menu-close, #pmgpt-menu-close svg{ color: #ECEDEE !important; }
+
+/* ---------------- Футер ---------------- */
+.fse-footer{ background: #121315 !important; border-top: 1px solid var(--line) !important; color: var(--t-body) !important; }
+.fse-footer-columns .fse-column h4{ color: var(--t-strong) !important; font-family: var(--k3-font-display); font-size: 1rem !important; }
+.fse-footer-about .fse-paragraph,
+.fse-footer-menu a,
+.fse-footer .fse-contact-list li{ color: var(--t-muted) !important; }
+.fse-footer-menu a:hover{ color: var(--accent-ink) !important; }
+.fse-footer .fse-contact-list a{ color: var(--accent-ink) !important; }
+.fse-footer .fse-contact-list i{ color: var(--accent-ink); }
+.fse-footer-bottom{ border-top-color: var(--line) !important; }
+.fse-copyright{ color: #8E939A !important; }
+.pressmegpt-attribution{ background: #121315; color: #8E939A; }
+.pressmegpt-attribution a{ color: #A0A6AD; }
+
+/* Мобильная панель звонка */
+@media (max-width: 768px){
+  .fse-mobile-bar{ background: rgba(18,19,21,.95) !important; border-top: 1px solid var(--line); }
+  .fse-mobile-bar .call{ background: var(--accent) !important; color: #16171a !important; }
+}
+
+/* =========================================================
+   ГЛАВНАЯ: псевдо-3D первый экран (template-parts/hero-3d.php)
+   ========================================================= */
+.k3-wrap{ max-width: 1240px; margin: 0 auto; padding-left: 20px; padding-right: 20px; box-sizing: border-box; }
+.k3-hero{ position: relative; padding: 40px 0 8px; overflow: hidden; }
+.k3-hero-grid{ display: grid; grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); gap: 24px; align-items: center; }
+.k3-hero-text{ position: relative; z-index: 2; display: flex; flex-direction: column; gap: 20px; }
+.k3-kicker{
+  margin: 0; align-self: flex-start; display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 14px; border-radius: 999px; background: rgba(242,140,27,.12);
+  color: var(--accent-ink); font-size: .8rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+}
+.k3-dot{ width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; }
+.k3-h1{
+  margin: 0; font-family: var(--k3-font-display); font-weight: 800;
+  font-size: clamp(2rem, 4.2vw, 3.6rem); line-height: 1.06; letter-spacing: -.015em; color: var(--t-strong);
+}
+.k3-accent{ color: var(--accent); }
+.k3-lead{ margin: 0; font-size: 1.12rem; line-height: 1.6; color: #BFC4CA; max-width: 560px; }
+.k3-hero-actions{ display: flex; flex-wrap: wrap; gap: 10px; }
+.k3-btn{
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 52px; padding: 0 22px; border-radius: 12px; font: inherit;
+  font-weight: 700; font-size: 1rem; text-decoration: none !important; cursor: pointer;
+  transition: background-color .2s, transform .2s, border-color .2s; box-sizing: border-box;
+}
+.k3-btn-primary{ background: var(--accent); color: #16171a !important; font-weight: 800; border: 0; }
+.k3-btn-primary:hover{ background: var(--accent-hover); transform: translateY(-1px); }
+.k3-btn-ghost{ background: rgba(255,255,255,.06); color: #ECEDEE !important; border: 1.5px solid rgba(255,255,255,.16); }
+.k3-btn-ghost:hover{ border-color: var(--accent); background: rgba(255,255,255,.1); }
+.k3-hero-actions .fse-max-button-wrap{ width: auto; }
+.k3-note{ margin: 0; font-size: .88rem; color: #969CA3; }
+
+.k3-stage{ position: relative; height: clamp(340px, 44vw, 580px); }
+.k3-layer{ position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; will-change: transform; }
+.k3-fill{ fill: var(--accent); }
+.k3-stroke{ stroke: var(--accent); }
+.k3-float{ position: absolute; inset: 0; animation: k3float 6s ease-in-out infinite; }
+.k3-rock1{ animation: k3float 4.5s ease-in-out infinite; }
+.k3-rock2{ animation: k3float 5.5s ease-in-out -2s infinite; }
+@keyframes k3float{ 0%,100%{ translate: 0 0; } 50%{ translate: 0 -12px; } }
+.k3-ghost{
+  position: absolute; left: -2%; top: 4%; z-index: 0; pointer-events: none;
+  font-family: var(--k3-font-display); font-weight: 800; line-height: .9; white-space: nowrap;
+  font-size: clamp(64px, 9vw, 136px); color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255,255,255,.07);
+}
+.k3-tag{
+  position: absolute; z-index: 3; opacity: 0; display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 12px; border-radius: 999px; background: rgba(22,23,26,.88);
+  border: 1px solid rgba(255,255,255,.12); color: #ECEDEE; font-size: .8rem; font-weight: 700; white-space: nowrap;
+}
+.k3-tag::before{ content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.k3-badge{
+  position: absolute; z-index: 4; right: 4%; bottom: 2%;
+  display: flex; flex-direction: column; gap: 2px; padding: 12px 16px; border-radius: 14px;
+  background: rgba(37,40,44,.92); border: 1px solid var(--line); box-shadow: 0 16px 36px rgba(0,0,0,.4);
+}
+.k3-badge strong{ color: var(--t-strong); font-size: .95rem; }
+.k3-badge span{ color: var(--t-muted); font-size: .82rem; }
+.k3-scroll-hint{ margin: 4px auto 0; font-size: .82rem; color: #80868D; }
+
+.k3-strip{ padding: 28px 0 40px; }
+.k3-strip-grid{ display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.k3-plaque{
+  display: flex; gap: 14px; align-items: flex-start; padding: 18px; border-radius: 16px;
+  background: rgba(255,255,255,.035); border: 1px solid var(--line);
+}
+.k3-plaque > div{ display: flex; flex-direction: column; gap: 2px; }
+.k3-plaque strong{ color: var(--t-strong); font-size: 1rem; }
+.k3-plaque span:not(.k3-num){ color: var(--t-muted); font-size: .88rem; }
+.k3-num{ font-family: var(--k3-font-display); font-weight: 800; font-size: .9rem; color: var(--accent-ink); padding-top: 2px; }
+
+@media (max-width: 992px){
+  .k3-hero-grid{ grid-template-columns: 1fr; }
+  .k3-stage{ height: clamp(280px, 70vw, 460px); order: -1; }
+  .k3-strip-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px){
+  .k3-hero{ padding-top: 16px; }
+  .k3-strip-grid{ grid-template-columns: 1fr; }
+  .k3-hero-actions .k3-btn,
+  .k3-hero-actions .fse-max-button-wrap{ flex: 1 1 100%; }
+  .k3-tag{ font-size: .7rem; padding: 5px 9px; }
+  .k3-badge{ display: none; }
+}
+@media (prefers-reduced-motion: reduce){
+  .k3-float, .k3-rock1, .k3-rock2{ animation: none; }
+  .k3-tag{ opacity: 1; }
+}
+
+/* Точечные правки после проверки */
+.fse-faq-item .fse-faq-details summary{ padding: 18px 56px 18px 22px !important; }
+.fse-faq-item .fse-faq-answer{ padding: 0 22px 18px !important; }
+.fse-price-card p.fse-price-value{ font-size: clamp(2rem, 4vw, 2.8rem) !important; font-weight: 800; margin: 6px 0 14px !important; }
+.fse-footer a{ text-decoration: none !important; }
+.fse-footer a:hover{ text-decoration: underline !important; }
+.k3-h1{ font-size: clamp(1.9rem, 3.5vw, 3.3rem); }
+.theme-designer-header #pmgpt-menu-toggle,
+.theme-designer-header #pmgpt-menu-toggle svg{ color:#ECEDEE !important; }
+.theme-designer-header #pmgpt-menu-toggle svg path{ stroke:#ECEDEE !important; }

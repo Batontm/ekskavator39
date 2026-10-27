@@ -1,0 +1,274 @@
+/* =========================================================
+   ЭКСКАВАТОР 39 — 3D-эффекты по всему сайту.
+   Сцены (inc/scenes.php + js/k3-scenes.js), наклон карточек
+   и блики (js/k3-fx.js), объёмные иконки и кнопки, появление
+   блоков «из глубины», фоновые комья земли.
+   ========================================================= */
+
+/* ---------- Фоновые комья ---------- */
+body{ position: relative; }
+#page{ position: relative; z-index: 1; }
+.k3-particles{ position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.k3-particle{
+  position: absolute; display: block; opacity: .55;
+  animation: k3float 7s ease-in-out infinite; will-change: transform;
+}
+@media (max-width: 600px){ .k3-particle:nth-child(n+5){ display: none; } }
+
+/* ---------- Сцены на внутренних страницах ---------- */
+body.k3-has-scene .fse-hero-content{
+  display: grid !important;
+  grid-template-columns: minmax(0, 52fr) minmax(0, 48fr) !important;
+  gap: 32px !important;
+  align-items: center !important;
+}
+.k3-page-scene{ position: relative; min-width: 0; z-index: 2; }
+.k3-page-scene .k3-stage{ height: clamp(300px, 34vw, 470px); }
+body.k3-has-scene .fse-hero{ padding-top: 24px; padding-bottom: 48px; }
+body.k3-has-scene .fse-hero-text-column h1.fse-heading{ font-size: clamp(1.9rem, 3.4vw, 3rem) !important; }
+
+@media (max-width: 992px){
+  body.k3-has-scene .fse-hero-content{ grid-template-columns: 1fr !important; gap: 8px !important; }
+  .k3-page-scene{ order: -1; }
+  .k3-page-scene .k3-stage{ height: clamp(240px, 64vw, 380px); }
+}
+
+/* Сцена вне первого экрана (главная) */
+.k3-inline-scene{ max-width: 920px; margin: 8px auto 0; }
+.k3-inline-scene .k3-stage{ height: clamp(260px, 32vw, 400px); }
+.k3-split{ display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
+.k3-split .k3-stage{ height: clamp(260px, 30vw, 400px); }
+@media (max-width: 992px){ .k3-split{ grid-template-columns: 1fr; } }
+
+.k3-static .k3-tag{ opacity: 1; }
+.k3-stage .k3-tag{ transition: opacity .3s; }
+
+/* ---------- Наклон карточек и блик ---------- */
+.fse-card, .fse-gallery-item, .k3-plaque, .fse-price-card, .fse-photo, .k3-tilt{
+  position: relative;
+  transform-style: preserve-3d;
+}
+.fse-card, .fse-gallery-item, .k3-plaque, .fse-price-card, .fse-photo, .k3-tilt, .fse-faq-item{
+  transition: transform .45s cubic-bezier(.16,1,.3,1), border-color .25s ease, box-shadow .3s ease !important;
+}
+.k3-tilting{ transition: transform .08s linear, border-color .25s ease, box-shadow .3s ease !important; will-change: transform; }
+.fse-card:hover, .fse-gallery-item:hover{ transform: none; }
+.fse-card.k3-tilting, .fse-gallery-item.k3-tilting, .k3-plaque.k3-tilting{
+  box-shadow: 0 30px 60px rgba(0,0,0,.45), 0 0 0 1px rgba(242,140,27,.35) !important;
+}
+.fse-card::after, .fse-gallery-item::after, .k3-plaque::after, .fse-price-card::after, .fse-photo::after, .k3-tilt::after{
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 3;
+  background: radial-gradient(circle at var(--k3-gx, 50%) var(--k3-gy, 0%), rgba(255,255,255,.13), rgba(255,255,255,0) 46%);
+  opacity: 0; transition: opacity .3s ease;
+}
+.k3-tilting::after{ opacity: 1; }
+/* Содержимое карточки «выходит» вперёд при наклоне */
+.fse-card > *{ transition: transform .45s cubic-bezier(.16,1,.3,1); }
+.fse-card.k3-tilting .fse-card-icon{ transform: translateZ(40px); }
+.fse-card.k3-tilting .fse-heading{ transform: translateZ(24px); }
+.fse-card.k3-tilting .fse-button{ transform: translateZ(18px); }
+
+/* ---------- Объёмные иконки-плитки ---------- */
+.fse-card-icon{
+  background: linear-gradient(145deg, #ffb860 0%, #f28c1b 60%, #d9760d 100%) !important;
+  color: #1c1e21 !important;
+  box-shadow:
+    0 1px 0 #c86f10, 0 2px 0 #bd680f, 0 3px 0 #b0600d, 0 4px 0 #a2580b, 0 5px 0 #944f09,
+    0 14px 22px rgba(0,0,0,.45) !important;
+  transform: translateZ(0);
+}
+.fse-card-icon .fse-icon, .fse-card-icon i{ color: #1c1e21 !important; }
+
+/* ---------- Объёмные кнопки ---------- */
+.fse-button-primary, .k3-btn-primary, .fse-header-actions .fse-button-phone{
+  box-shadow: 0 4px 0 #a9570a, 0 12px 24px rgba(242,140,27,.22) !important;
+  transition: transform .15s ease, box-shadow .15s ease, background-color .2s ease !important;
+}
+.fse-button-primary:hover, .k3-btn-primary:hover, .fse-header-actions .fse-button-phone:hover{
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 0 #a9570a, 0 16px 28px rgba(242,140,27,.3) !important;
+}
+.fse-button-primary:active, .k3-btn-primary:active, .fse-header-actions .fse-button-phone:active{
+  transform: translateY(3px) !important;
+  box-shadow: 0 1px 0 #a9570a, 0 4px 10px rgba(242,140,27,.2) !important;
+}
+.fse-button-secondary, .k3-btn-ghost{
+  box-shadow: 0 3px 0 rgba(0,0,0,.45) !important;
+}
+.fse-button-secondary:active, .k3-btn-ghost:active{ transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,.45) !important; }
+
+/* ---------- Объёмные заголовки ---------- */
+.k3-h1,
+.fse-hero-text-column h1.fse-heading,
+.fse-section-header h2.fse-heading{
+  text-shadow: 0 1px 0 #2e3034, 0 2px 0 #2a2c30, 0 3px 0 #26282b, 0 4px 0 #222427, 0 14px 24px rgba(0,0,0,.55);
+}
+.fse-price-value .fse-highlight-price{
+  text-shadow: 0 1px 0 #c86f10, 0 2px 0 #b0600d, 0 3px 0 #944f09, 0 12px 20px rgba(0,0,0,.5);
+}
+.k3-num{ text-shadow: 0 1px 0 #a9570a, 0 2px 0 #7d4007; }
+
+/* ---------- Появление блоков «из глубины» ---------- */
+@keyframes k3rise{
+  from{ opacity: 0; transform: perspective(1100px) rotateX(16deg) translateY(56px) scale(.96); }
+  to{ opacity: 1; transform: none; }
+}
+@keyframes k3fromLeft{
+  from{ opacity: 0; transform: perspective(1100px) rotateY(16deg) translateX(-60px); }
+  to{ opacity: 1; transform: none; }
+}
+@keyframes k3fromRight{
+  from{ opacity: 0; transform: perspective(1100px) rotateY(-16deg) translateX(60px); }
+  to{ opacity: 1; transform: none; }
+}
+.animate-on-scroll, .animate-scale, .animate-slide-left, .animate-slide-right{ transform-origin: 50% 100%; }
+.animate-on-scroll.visible, .animate-scale.visible{ animation: k3rise .95s cubic-bezier(.16,1,.3,1) forwards !important; }
+.animate-slide-left.visible{ animation: k3fromLeft .95s cubic-bezier(.16,1,.3,1) forwards !important; }
+.animate-slide-right.visible{ animation: k3fromRight .95s cubic-bezier(.16,1,.3,1) forwards !important; }
+.fse-services-grid > .visible:nth-child(3n+2), .fse-portfolio-grid > .visible:nth-child(3n+2){ animation-delay: .08s !important; }
+.fse-services-grid > .visible:nth-child(3n+3), .fse-portfolio-grid > .visible:nth-child(3n+3){ animation-delay: .16s !important; }
+.k3-done{ animation: none !important; opacity: 1 !important; }
+
+/* ---------- Фото: глубина и рамка ---------- */
+.fse-photo img, .fse-gallery-item img{ transform: translateZ(0); }
+.fse-photo.k3-tilting img{ transform: translateZ(20px); }
+
+/* ---------- 404 ---------- */
+.k3-404{ padding: 24px 0 72px; }
+.k3-404-grid{ display: grid; grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); gap: 24px; align-items: center; }
+.k3-404-code{ margin: 0; font-family: var(--k3-font-display); font-weight: 800; font-size: clamp(4rem, 12vw, 9rem); line-height: .9; color: var(--accent);
+  text-shadow: 0 2px 0 #c86f10, 0 4px 0 #b0600d, 0 6px 0 #944f09, 0 8px 0 #7d4007, 0 24px 36px rgba(0,0,0,.6); }
+.k3-404 h1{ margin: 18px 0 12px; font-family: var(--k3-font-display); font-size: clamp(1.5rem, 2.6vw, 2.1rem); color: var(--t-strong); }
+.k3-404 p{ color: var(--t-body); margin: 0 0 22px; font-size: 1.05rem; line-height: 1.6; }
+.k3-404-links{ display: flex; flex-wrap: wrap; gap: 10px; }
+@media (max-width: 992px){ .k3-404-grid{ grid-template-columns: 1fr; } .k3-404 .k3-stage{ order: -1; } }
+
+@media (prefers-reduced-motion: reduce){
+  .k3-particle{ animation: none; }
+  .animate-on-scroll, .animate-scale, .animate-slide-left, .animate-slide-right{ opacity: 1 !important; animation: none !important; }
+}
+
+/* ---------- Замаскированный номер (inc/phone-guard.php) ---------- */
+.k3-phone{ white-space: nowrap; cursor: pointer; }
+.k3-phone-tail{ letter-spacing: .06em; opacity: .75; }
+span.k3-phone:not([data-k3-open]){ border-bottom: 1px dashed currentColor; }
+a .k3-phone{ border-bottom: 0 !important; cursor: inherit; }
+
+/* =========================================================
+   Постоянные анимации сцен (классы k3a-*, inc/scenes*.php)
+   ========================================================= */
+.k3-stage svg g, .k3-stage svg path, .k3-stage svg polygon, .k3-stage svg line, .k3-stage svg polyline, .k3-stage svg ellipse{ transform-box: fill-box; }
+
+/* Покачивание вверх-вниз */
+.k3a-bob{ transform-origin: 50% 50%; animation: k3a-bob 3.6s ease-in-out infinite; }
+@keyframes k3a-bob{ 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-9px); } }
+
+/* Бегущий пунктир (разметка, маршруты) */
+.k3a-march{ animation: k3a-march 1.2s linear infinite; }
+@keyframes k3a-march{ to{ stroke-dashoffset: -28; } }
+
+/* Ком грунта вылетает вверх и тает */
+.k3a-rise{ animation: k3a-rise 3.3s ease-out infinite; opacity: 0; }
+@keyframes k3a-rise{ 0%{ transform: translateY(30px); opacity: 0; } 15%{ opacity: 1; } 70%{ opacity: 1; } 100%{ transform: translateY(-70px) rotate(25deg); opacity: 0; } }
+
+/* Ком падает вниз (засыпка) */
+.k3a-fall{ animation: k3a-fall 2.6s cubic-bezier(.5,0,.9,.6) infinite; }
+@keyframes k3a-fall{ 0%{ transform: translateY(-50px); opacity: 0; } 15%{ opacity: 1; } 85%{ opacity: 1; } 100%{ transform: translateY(70px); opacity: 0; } }
+
+/* Полёт по дуге: X — равномерно, Y — вверх и вниз */
+.k3a-arcx{ animation: k3a-arcx 3.3s linear infinite; }
+.k3a-arcy{ animation: k3a-arcy 3.3s linear infinite; }
+@keyframes k3a-arcx{ 0%{ transform: translateX(0); opacity: 0; } 8%{ opacity: 1; } 88%{ opacity: 1; } 100%{ transform: translateX(var(--dx)); opacity: 0; } }
+@keyframes k3a-arcy{
+  0%{ transform: translateY(0); animation-timing-function: ease-out; }
+  45%{ transform: translateY(var(--h)); animation-timing-function: ease-in; }
+  100%{ transform: translateY(var(--dy)); }
+}
+
+/* Луч, проходящий по плоскости */
+.k3a-scan{ animation: k3a-scan 3.2s ease-in-out infinite alternate; }
+.k3a-scan line{ transform-box: view-box; }
+@keyframes k3a-scan{ from{ transform: translate(0,0); } to{ transform: translate(var(--tx), var(--ty)); } }
+
+/* Свечение граней по очереди */
+.k3a-glow{ opacity: 0; animation: k3a-glow 2.4s ease-in-out infinite; }
+@keyframes k3a-glow{ 0%,100%{ opacity: 0; } 30%{ opacity: .35; } }
+
+/* Пульсирующее кольцо */
+.k3a-pulse{ transform-origin: 50% 50%; animation: k3a-pulse 2.4s ease-out infinite; }
+@keyframes k3a-pulse{ 0%{ transform: scale(1); opacity: .9; } 100%{ transform: scale(2.1); opacity: 0; } }
+
+/* Всплывающие сообщения / значки */
+.k3a-pop{ transform-origin: 50% 100%; animation: k3a-pop 4.5s ease-in-out infinite; }
+@keyframes k3a-pop{ 0%{ transform: scale(.6) translateY(8px); opacity: 0; } 12%,70%{ transform: none; opacity: 1; } 85%,100%{ transform: translateY(-8px); opacity: 0; } }
+
+/* Растущий столбик */
+.k3a-grow{ transform-origin: 50% 100%; animation: k3a-grow 5s ease-in-out infinite; }
+@keyframes k3a-grow{ 0%,100%{ transform: scaleY(.08); } 55%,85%{ transform: scaleY(1); } }
+
+/* Флажок на колышке */
+.k3a-flag{ transform-origin: 0 0; animation: k3a-flag 1.6s ease-in-out infinite; }
+@keyframes k3a-flag{ 0%,100%{ transform: skewY(0); } 50%{ transform: skewY(-12deg) scaleX(.85); } }
+
+/* Рабочий цикл экскаватора: стрела, ковш, передний ковш */
+.k3a-boom{ transform-box: view-box !important; transform-origin: 590px 304px; animation: k3a-boom 4.2s ease-in-out infinite; }
+.k3a-curl{ transform-box: view-box !important; transform-origin: 748px 354px; animation: k3a-curl 4.2s ease-in-out infinite; }
+.k3a-lift{ transform-box: view-box !important; transform-origin: 372px 296px; animation: k3a-lift 4.2s ease-in-out infinite; }
+@keyframes k3a-boom{ 0%,100%{ transform: rotate(0); } 35%{ transform: rotate(8deg); } 65%{ transform: rotate(-5deg); } }
+@keyframes k3a-curl{ 0%,100%{ transform: rotate(0); } 35%{ transform: rotate(10deg); } 55%{ transform: rotate(-38deg); } 80%{ transform: rotate(-20deg); } }
+@keyframes k3a-lift{ 0%,100%{ transform: rotate(0); } 50%{ transform: rotate(-4deg); } }
+
+/* Чертёж: контур прорисовывается, луч проходит слева направо */
+.k3-blueprint .k3-machine path,
+.k3-blueprint .k3-machine circle,
+.k3-blueprint .k3-machine rect{
+  fill: none !important; stroke: #dfe7ee !important; stroke-width: 2 !important;
+  stroke-dasharray: 1600; stroke-dashoffset: 1600;
+  animation: k3a-draw 3.6s ease forwards;
+}
+.k3-blueprint .k3-machine [opacity]{ display: none; }
+@keyframes k3a-draw{ to{ stroke-dashoffset: 0; } }
+.k3a-sweep{ transform-box: view-box !important; animation: k3a-sweep 4s ease-in-out infinite; }
+@keyframes k3a-sweep{ 0%{ transform: translateX(0); opacity: 0; } 10%{ opacity: 1; } 90%{ opacity: 1; } 100%{ transform: translateX(740px); opacity: 0; } }
+
+/* Стопка фотографий */
+.k3-photos{ perspective: 1200px; }
+.k3-photo{ position: absolute; width: 50%; aspect-ratio: 4 / 3; will-change: transform; }
+.k3-photo-in{
+  width: 100%; height: 100%; box-sizing: border-box; padding: 8px 8px 22px; border-radius: 6px;
+  background: #f1eee7; box-shadow: 0 22px 40px rgba(0,0,0,.5);
+  transform: rotateX(8deg) rotate(var(--r));
+  animation: k3a-photo 6s ease-in-out infinite; animation-delay: var(--d);
+}
+.k3-photo-in img{ display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 3px; }
+@keyframes k3a-photo{ 0%,100%{ transform: rotateX(8deg) rotate(var(--r)) translateY(0); } 50%{ transform: rotateX(4deg) rotate(calc(var(--r) * .7)) translateY(-8px); } }
+
+@media (prefers-reduced-motion: reduce){
+  [class*="k3a-"], .k3-photo-in{ animation: none !important; opacity: 1 !important; }
+  .k3-blueprint .k3-machine path, .k3-blueprint .k3-machine circle, .k3-blueprint .k3-machine rect{ animation: none !important; stroke-dashoffset: 0; }
+}
+
+/* Вода течёт по дну канавы */
+.k3a-flow{ animation: k3a-flow 1.4s linear infinite; }
+@keyframes k3a-flow{ to{ stroke-dashoffset: -36; } }
+/* Снегопад */
+.k3a-snow{ animation: k3a-snow 4s linear infinite; }
+@keyframes k3a-snow{ 0%{ transform: translate(0,-30px); opacity: 0; } 10%{ opacity: 1; } 90%{ opacity: 1; } 100%{ transform: translate(-18px,240px); opacity: 0; } }
+
+/* ---------- Мобильное меню (выезжающая панель) — тёмное ----------
+   Инлайновый <style> PressMeGPT задаёт #pmgpt-menu-panel белым с !important;
+   html body поднимает специфичность выше. */
+html body #pmgpt-menu-panel{ background: #1c1e21 !important; color: #ECEDEE !important; box-shadow: -10px 0 40px rgba(0,0,0,.6) !important; }
+html body #pmgpt-menu-panel .pmgpt-menu-panel-head,
+html body #pmgpt-menu-panel .pmgpt-menu-actions{ border-color: rgba(255,255,255,.08) !important; }
+html body #pmgpt-menu-panel .pmgpt-menu-link{
+  color: #ECEDEE !important; border-bottom: 1px solid rgba(255,255,255,.07) !important;
+  font-weight: 600 !important; padding: 13px 20px !important;
+}
+html body #pmgpt-menu-panel .pmgpt-menu-link.k3-sub{
+  padding-left: 36px !important; font-weight: 500 !important; font-size: 15px !important; color: #B7BBC1 !important;
+}
+html body #pmgpt-menu-panel .pmgpt-menu-link:hover,
+html body #pmgpt-menu-panel .pmgpt-menu-link.is-current{ color: #FFA94D !important; }
+html body #pmgpt-menu-close, html body #pmgpt-menu-close svg{ color: #ECEDEE !important; }
+html body #pmgpt-menu-panel .pmgpt-menu-actions .fse-button-phone{ width: 100%; justify-content: center; text-align: center; }

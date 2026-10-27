@@ -1,0 +1,201 @@
+/* ЭКСКАВАТОР 39 — доработки поверх темы (mu-plugin ekskavator39-core) */
+
+/* ===== Списки «иконка + жирный заголовок + описание» на телефоне =====
+   В теме li — flex, и заголовок с описанием стоят разными колонками:
+   на узком экране заголовок сжимается и наезжает на текст.
+   Делаем одним абзацем, иконка слева. */
+@media (max-width: 992px) {
+    .fse-feature-list li {
+        display: block;
+        position: relative;
+        padding-left: 34px;
+    }
+    .fse-feature-list li > i:first-child,
+    .fse-feature-list li > .fse-icon:first-child {
+        position: absolute;
+        left: 0;
+        top: 0.2em;
+        width: 22px;
+        margin: 0;
+        text-align: center;
+    }
+    .fse-feature-list li > strong {
+        display: inline;
+    }
+}
+
+/* ===== Мобильная панель «Позвонить / MAX» ===== */
+.kopka-sticky-cta { display: none; }
+@media (max-width: 992px) {
+    .kopka-sticky-cta {
+        display: flex;
+        gap: 10px;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 900;
+        padding: 10px 12px;
+        padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+        background: rgba(22, 22, 25, 0.97);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.25);
+    }
+    .kopka-sticky-cta__btn {
+        flex: 1 1 0;
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 0 12px;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.2;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+    .kopka-sticky-cta__btn--call {
+        background-color: var(--td-color-btn-primary-bg, #f5a524);
+        color: var(--td-color-btn-primary-text, #16161a);
+    }
+    .kopka-sticky-cta__btn--max {
+        background: transparent;
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.55);
+    }
+    body { padding-bottom: 74px; }
+    html:has(.pmgpt-menu-panel.open) .kopka-sticky-cta { display: none; }
+}
+
+/* ===== 152-ФЗ: реквизиты и ссылки в подвале ===== */
+.kopka-legal {
+    max-width: 1200px;
+    margin: 24px auto 0;
+    padding: 16px 16px 8px;
+    border-top: 1px solid rgba(127, 127, 127, 0.25);
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: center;
+}
+.kopka-legal p { margin: 4px 0; }
+.kopka-legal a { color: inherit; text-decoration: underline; }
+.kopka-legal__links a { white-space: nowrap; }
+
+/* ===== 152-ФЗ: cookie-баннер ===== */
+.kopka-cookie {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    z-index: 950;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 16px 18px;
+    background: #fff;
+    color: #1d1d1f;
+    border-radius: 12px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.3);
+    font-family: Inter, system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.45;
+}
+.kopka-cookie[hidden] { display: none; }
+.kopka-cookie__text { margin: 0 0 12px; color: #1d1d1f; }
+.kopka-cookie__text a { color: inherit; text-decoration: underline; }
+.kopka-cookie__buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+.kopka-cookie__btn {
+    flex: 1 1 160px;
+    min-height: 44px;
+    padding: 0 14px;
+    border-radius: 10px;
+    border: 1px solid #1d1d1f;
+    background: #fff;
+    color: #1d1d1f;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+.kopka-cookie__btn:hover,
+.kopka-cookie__btn:focus-visible { background: #f2f2f2; }
+@media (max-width: 992px) {
+    .kopka-cookie {
+        left: 12px;
+        right: 12px;
+        bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+    }
+}
+html:has(.pmgpt-menu-panel.open) .kopka-cookie { display: none; }
+
+/* ===== «Как заказать»: 4 шага в один ряд, без пустого места =====
+   Тема ставит любую сетку .fse-services-grid в 3 колонки, и у 4 шагов
+   во втором ряду оставалось 2 пустых места. Правило срабатывает только
+   для сетки ровно из 4 карточек. */
+@media (min-width: 1100px) {
+    .fse-services-grid:has(> .fse-card:nth-child(4):last-child) {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 24px;
+    }
+    .fse-services-grid:has(> .fse-card:nth-child(4):last-child) > .fse-card {
+        padding: 32px 26px;
+    }
+    .fse-services-grid:has(> .fse-card:nth-child(4):last-child) h3 {
+        font-size: 22px;
+    }
+}
+@media (min-width: 641px) and (max-width: 1099px) {
+    .fse-services-grid:has(> .fse-card:nth-child(4):last-child) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* ===== Логотип в подвале: без растяжения =====
+   В теме у картинки фиксированная высота 40px и ширина на всю колонку,
+   из-за чего логотип 900×199 растягивался почти вдвое по горизонтали. */
+.fse-footer-logo {
+    width: 244px !important;
+    height: auto !important;
+    max-width: 100%;
+    object-fit: contain;
+    align-self: flex-start;
+}
+
+/* Подсказка «Наведите курсор…» на главном экране скрыта по просьбе владельца */
+.k3-scroll-hint { display: none !important; }
+
+/* Ссылка «Theme by PressMeGPT» скрыта (на случай повторной загрузки темы) */
+.pressmegpt-attribution { display: none !important; }
+
+/* ===== Списки «иконка + жирный заголовок + описание» на всех экранах =====
+   На компьютере длинный заголовок («Минимальный…») тоже налезал на описание. */
+.fse-feature-list li {
+    display: block !important;
+    position: relative;
+    padding-left: 34px;
+}
+.fse-feature-list li > i:first-child,
+.fse-feature-list li > .fse-icon:first-child {
+    position: absolute;
+    left: 0;
+    top: 0.2em;
+    width: 22px;
+    margin: 0;
+    text-align: center;
+}
+.fse-feature-list li > strong {
+    display: inline;
+    margin-right: 4px;
+}
+
+/* Номер карточки (01, 02…) не наезжает на длинный заголовок */
+.fse-service-card > h3.fse-heading { padding-right: 40px; }
+
+/* ===== Списки контактов «Телефон: … / MAX: … / Зона выезда: …» на телефоне =====
+   В теме li — flex с центровкой: подпись и значение разъезжались. Делаем ровные строки слева. */
+@media (max-width: 767px) {
+    ul.fse-contact-list { padding-left: 0; margin-left: 0; text-align: left; }
+    ul.fse-contact-list li.fse-contact-info { display: block !important; text-align: left !important; line-height: 1.5; }
+    ul.fse-contact-list li.fse-contact-info > strong { display: inline !important; margin-right: 6px; }
+    ul.fse-contact-list li.fse-contact-info > a { display: inline !important; }
+}

@@ -1,0 +1,21 @@
+# BEGIN Redirect kopka39
+# Постоянная переадресация 301 со второго домена на основной.
+# Работает для http и https, с www и без, путь страницы сохраняется.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^(www\.)?kopka39\.ru$ [NC]
+RewriteRule ^(.*)$ https://ekskavator39.ru/$1 [R=301,L]
+</IfModule>
+# END Redirect kopka39
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress
